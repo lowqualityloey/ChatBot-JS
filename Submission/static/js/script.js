@@ -1,3 +1,38 @@
+const decisionTree = {
+  question: "Does it have a characteristics of a Plant?",
+  yes: {
+    question: "Which part of a Plant? a Leaf or Wood?",
+    leaf: "Black Zetsu",
+    wood: {
+      question: "looks Processed of Whittled?",
+      processed: "Konan",
+      whittled: "Sasori",
+    }
+  },
+  no: {
+    question: "Has a Short or Long Hair? or maybe its Covered?",
+    covered: "Kakuzu",
+    long: {
+      question: "Is he Loud?",
+      yes: "Deidara",
+      no: "Itachi"
+    },
+    short: {
+      question: "Does he act like a Child?",
+      yes:{
+        question: "How's the face? looks Normal or Masked?",
+        normal: "Hidan",
+        masked: "Tobi"
+      },
+      no:{
+        question: "Blue or Orange?",
+        blue: "Kisame",
+        orange: "Pein"
+      }
+    }
+  }
+}
+
 // array to track the chat messages
 const chatLogs = [];
 

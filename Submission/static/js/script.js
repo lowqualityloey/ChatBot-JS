@@ -40,8 +40,53 @@ const chatLogs = [];
  *
  * FINISH THIS FUNCTION!
  */
+let currentDecision = decisionTree;
+
+let name;
+let nameConfirmed;
+
+const yesReplies = ["yup", "yes", "okay", "ok"];
+
+const getName = (msg) => {
+  name = msg;
+  if (name === ""){
+    name = undefined;
+    return ("Please enter your name.");
+  }
+  if(nameConfirmed){
+    return "You're name has been updated";
+  }
+  else{
+    nameConfirmed = false;
+   return `So your name is <b>${name}</b>, is this correct?`
+  }
+}
+
 const getBotReply = (msg) => {
-  return "Error unknown...";
+  // return "Error unknown...";
+  if (name === undefined){
+    return getName(msg);
+  }
+ else if (nameConfirmed === false){
+    if (yesReplies.includes(msg.toLowerCase())) {
+      nameConfirmed = true;
+      return "Thanks for confirming!";
+    }
+    else{
+      name = undefined;
+      return `Well tell me your name`;
+    }
+  }
+ else if (msg === ""){
+    return "You were speechless, Sorry I don't get it"
+  }
+
+
+// else if (nameConfirmed === true){
+//   return "and Now tell me the characteristics of this villain";
+// }
+
+
 };
 
 const renderChatbox = () => {
@@ -64,8 +109,9 @@ const renderChatbox = () => {
   // create a chat item div element
   for (let message of recentMessages) {
     let markup = `
-      <div class="chat-item chat-item-bot">${message.bot.replyMsg}</div>
-      <div class="chat-item chat-item-user">${message.user.inputMsg}</div>
+    <div class="chat-item chat-item-bot">${message.bot.replyMsg}</div>
+    <div class="chat-item chat-item-user">${message.user.inputMsg}</div>
+     
     `;
     chatboxHTML += markup;
   }

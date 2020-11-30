@@ -67,9 +67,9 @@ body {
 
 .chat-item-user {
   font-family: "Roboto", sans-serif;
+  text-align: right;
 }
 
 .chat-item-bot {
   font-family: "Roboto Mono", monospace;
-  text-align: right;
 }

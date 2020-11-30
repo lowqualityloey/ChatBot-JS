@@ -6,7 +6,7 @@ const decisionTree = {
       answer: "You're dealing with Black Zetsu!"
     }, 
     wood: {
-      question: "looks Processed of Whittled?",
+      question: "looks Processed or Whittled?",
       processed:{
         answer: "You're dealing with Konan!"
       }, 
@@ -80,22 +80,32 @@ let currentDecision = decisionTree;
 let name;
 let nameConfirmed;
 
-const yesReplies = ["yup", "yes", "okay", "ok", "yep", "y"];
+const yesReplies = ["yup", "yes", "okay", "ok", "yep", "y", "yeah", "yea"];
 const noReplies = [
   "nah",
   "no",
   "n",
   "i don't think so",
-  "i dont think so",
   "its not",
 ];
-const miscReplies = ["leaf", "wood", "processed", "whittled", ""];
+const miscReplies = ["leaf", "wood", "processed", "whittled", "covered"];
+
+    //Function Answer-Following Question
+const answerDecision = () => {
+      if (currentDecision.question) {
+        console.log(currentDecision.question);
+        return (currentDecision.question);
+      } 
+      else
+       console.log(currentDecision.answer);
+        return (currentDecision.answer);
+    };
 
 const getBotReply = (msg) => {
-  // return "Error unknown...";
   const lcMessage = msg.toLowerCase();
 
-  //validation section
+
+  //Name validation section
   if (name === undefined) {
     return getName(msg);
   } else if (nameConfirmed === false) {
@@ -104,35 +114,58 @@ const getBotReply = (msg) => {
       return `Now tell me the characteristics of this villain.<br><b><i>${currentDecision.question}</i></b><br><br>
       Cool! Nice to meet you, <b>${name}</b>.
       `;
-    } else {
+    } else if(noReplies.includes(lcMessage)){
       name = undefined;
       return `Well tell me your name then.`;
+    }else{
+      return `You're not making any sense`;
     }
-  } else if (msg === "") {
+
+  } 
+  
+  else if (msg === "") {
     return "You were speechless, Sorry I don't get it";
+  }
+  else if (
+    yesReplies.includes(lcMessage) === false &&
+    noReplies.includes(lcMessage) === false &&
+    miscReplies.includes(lcMessage) === false
+  ) {
+    currentDecision = decisionTree;
+    return ("You're not making any sense");
   }
 
 //conditional questions
   else {
     switch(true){
-        case yesReplies.includes(lcMessage):
 
+        //YES REPLIES
+        case yesReplies.includes(lcMessage):
           if(currentDecision){
             currentDecision = currentDecision.yes;
-            if(currentDecision.question){
-              return (currentDecision.question);
-            }
-             return(currentDecision.answer);
+            return answerDecision();
           }
-
           break;
+      //NO REPLIES
+        case yesReplies.includes(lcMessage):
+        
 
-        case miscReplies.includes('leaf'):
-          currentDecision = currentDecision.leaf;
-            return(currentDecision.answer);
-  
-        default:
-          return("I don't understand");
+      //MISC REPLIES    
+        case lcMessage === 'leaf':
+        currentDecision = currentDecision.leaf;
+        return answerDecision();
+        case lcMessage === 'wood':
+        currentDecision = currentDecision.wood;
+        console.log(currentDecision);
+        return answerDecision();
+
+        case lcMessage === 'processed':
+        currentDecision = currentDecision.processed;
+        return answerDecision();
+        case lcMessage === 'whittled':
+        currentDecision = currentDecision.whittled;
+        return answerDecision();
+
     }
   }
 };

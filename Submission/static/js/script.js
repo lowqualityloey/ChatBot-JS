@@ -1,56 +1,66 @@
 let name;
 let nameConfirmed;
 
-const decisionTree = {
+const decisionTree = { 
   question: "Does it have a characteristics of a Plant?",
   yes: {
     question: "Which part of a Plant? a Leaf or Wood?",
-    leaf:{
-      answer: "You're dealing with Black Zetsu!"
-    }, 
+    leaf: {
+      answer: "You're dealing with Zetsu!",
+      img: "zetsu.gif"
+    },
     wood: {
       question: "looks Processed or Whittled?",
-      processed:{
-        answer: "You're dealing with Konan!"
-      }, 
+      processed: {
+        answer: "You're dealing with Konan!",
+        img: "konan.gif"
+      },
       whittled: {
-        answer: "You're dealing with Sasori!"
-      }, 
+        answer: "You're dealing with Sasori!",
+        img: "sasori.gif"
+      },
     },
   },
   no: {
     question: "Has a Short or Long Hair? or maybe its Covered?",
     covered: {
-      answer: "You're dealing with Kakuzu!"
-    }, 
+      answer: "You're dealing with Kakuzu!",
+      img: "kakuzu.jpg"
+    },
     long: {
       question: "Is he Loud?",
       yes: {
-        answer: "You're dealing with Deidara!"
-      }, 
+        answer: "You're dealing with Deidara!",
+        img: "deidara.gif"
+      },
       no: {
-        answer: "You're dealing with Itachi!"
-      }, 
+        answer: "You're dealing with Itachi!",
+        img: "itachi.gif"
+      },
     },
     short: {
       question: "Does he act like a Child?",
       yes: {
         question: "How's the face? looks Normal or Masked?",
-        normal:{
-          answer: "You're dealing with Hidan!"
-        }, 
-        masked:{
-          answer: "You're dealing with Tobi!"
-        }, 
+        normal: {
+          answer: "You're dealing with Hidan!",
+          img: "hidan.gif"
+        },
+        masked: {
+          answer: "You're dealing with Tobi!",
+          img: "tobi.gif"
+        },
       },
       no: {
         question: "Blue or Orange?",
-        blue:{
-          answer: "You're dealing with Kisame!"
-        }, 
-        orange:{
-          answer: "You're dealing with Pein!"
-        }, 
+        blue: {
+          answer: "You're dealing with Kisame!",
+          img: "kisame.gif"
+        },
+        orange: {
+          answer: "You're dealing with Pein!",
+          img: "pein.gif"
+        },
       },
     },
   },
@@ -63,6 +73,27 @@ const chatLogs = [];
  *
  * FINISH THIS FUNCTION!
  */
+let currentDecision = decisionTree;
+
+const yesReplies = ["yup", "yes", "okay", "ok", "yep", "y", "yeah", "yea","okay"];
+const noReplies = ["nah", "no", "n", "i don't think so", "its not"];
+const miscReplies = [
+  "leaf",
+  "wood",
+  "processed",
+  "whittled",
+  "covered",
+  "its covered",
+  "long",
+  "long hair",
+  "short",
+  "short hair",
+  "blue",
+  "orange",
+  "looks normal",
+  "normal",
+  "masked",
+];
 
 const getName = (msg) => {
   name = msg;
@@ -74,123 +105,110 @@ const getName = (msg) => {
     return "You're name has been updated";
   } else {
     nameConfirmed = false;
-    return `So your name is <b>${name}</b>, is this correct?`;
+    return `So your name is <b>${name}</b>, is that correct?`;
   }
 };
 
-let currentDecision = decisionTree;
+const imgDisplay = (img, id) => {
+  return `<img id="${id}"src="static/img/${img}">`;
+}
 
-const yesReplies = ["yup", "yes", "okay", "ok", "yep", "y", "yeah", "yea"];
-const noReplies = [
-  "nah",
-  "no",
-  "n",
-  "i don't think so",
-  "its not",
-];
-const miscReplies = ["leaf", "wood", "processed", "whittled", "covered","long","short","blue","orange","looks normal","normal","masked"];
-
-    //Function Answer-Following Question
+//Function Answer-Following Question
 const answerDecision = () => {
-      if (currentDecision.question) {
-        console.log(currentDecision.question);
-        return (currentDecision.question);
-      } 
-      else
-       console.log(currentDecision.answer);
-        return (currentDecision.answer);
-    };
+  if (currentDecision.question) {
+    console.log(currentDecision.question);
+    return currentDecision.question;
+  } else console.log(currentDecision.answer);
+  return (currentDecision.answer+" "+ imgDisplay(currentDecision.img));
+};
 
 const getBotReply = (msg) => {
   const lcMessage = msg.toLowerCase();
 
-
   //Name validation section
   if (name === undefined) {
     return getName(msg);
-  } else if (nameConfirmed === false) {
+  } 
+  else if (nameConfirmed === false) {
     if (yesReplies.includes(lcMessage)) {
       nameConfirmed = true;
-      return `Now tell me the characteristics of this villain.<br><b><i>${currentDecision.question}</i></b><br><br>
-      Cool! Nice to meet you, <b>${name}</b>.
+      return `Cool! Nice to meet you, <b>${name}</b>.<br><br>Now tell me the characteristics of this villain.<br><br><b><i>${currentDecision.question}</i></b>
       `;
-    } else if(noReplies.includes(lcMessage)){
+    } else if (noReplies.includes(lcMessage)) {
       name = undefined;
       return `Well tell me your name then.`;
-    }else{
+    } else {
       return `You're not making any sense`;
     }
 
-  } 
-  
-  else if (msg === "") {
+    //ERROR VALIDATION
+  } else if (msg === "") {
     return "You were speechless, Sorry I don't get it";
-  }
-  else if (
+  } else if (
     yesReplies.includes(lcMessage) === false &&
     noReplies.includes(lcMessage) === false &&
     miscReplies.includes(lcMessage) === false
   ) {
     currentDecision = decisionTree;
-    return ("You're not making any sense");
+    return "You're not making any sense";
   }
 
-//conditional questions
+  //conditional questions
   else {
     console.log(lcMessage);
-    switch(true){
-        //YES REPLIES
-        case yesReplies.includes(lcMessage):
+    switch (true) {
+      //YES REPLIES
+      case yesReplies.includes(lcMessage):
         currentDecision = currentDecision.yes;
         return answerDecision();
-             
+
       //NO REPLIES
-        case noReplies.includes(lcMessage):
+      case noReplies.includes(lcMessage):
         currentDecision = currentDecision.no;
         return answerDecision();
-            
-      //MISC REPLIES  
-          //PLANT CHARACTERS
-        case lcMessage === 'leaf':
+
+      //MISC REPLIES
+      //PLANT CHARACTERS
+      case lcMessage === "leaf":
         currentDecision = currentDecision.leaf;
         return answerDecision();
-        case lcMessage === 'wood':
+
+      case lcMessage === "wood":
         currentDecision = currentDecision.wood;
         console.log(currentDecision);
         return answerDecision();
 
-        case lcMessage === 'processed':
+      case lcMessage === "processed":
         currentDecision = currentDecision.processed;
         return answerDecision();
-        case lcMessage === 'whittled':
+      case lcMessage === "whittled":
         currentDecision = currentDecision.whittled;
         return answerDecision();
 
-        //NON-PLANT CHARACTERS
-        case lcMessage === 'covered':
+      //NON-PLANT CHARACTERS
+      case lcMessage === "covered"|| lcMessage === "its covered":
         currentDecision = currentDecision.covered;
-        return answerDecision(); 
-        case lcMessage === 'long':
+        return answerDecision();
+      case lcMessage === "long" || lcMessage === "long hair":
         currentDecision = currentDecision.long;
-        return answerDecision(); 
-        case lcMessage === 'short':
+        return answerDecision();
+      case lcMessage === "short"|| lcMessage === "short hair":
         currentDecision = currentDecision.short;
-        return answerDecision(); 
+        return answerDecision();
 
-        case lcMessage === 'blue':
+      case lcMessage === "blue":
         currentDecision = currentDecision.blue;
-        return answerDecision(); 
-        case lcMessage === 'orange':
+        return answerDecision();
+      case lcMessage === "orange":
         currentDecision = currentDecision.orange;
-        return answerDecision(); 
-      
-        case lcMessage === 'normal':
-        currentDecision = currentDecision.normal;
-        return answerDecision(); 
-        case lcMessage === 'masked':
-        currentDecision = currentDecision.masked;
-        return answerDecision(); 
+        return answerDecision();
 
+      case lcMessage === "normal" || lcMessage === "looks normal":
+        currentDecision = currentDecision.normal;
+        return answerDecision();
+      case lcMessage === "masked":
+        currentDecision = currentDecision.masked;
+        return answerDecision();
     }
   }
 };
@@ -212,12 +230,14 @@ const renderChatbox = () => {
   // markup to display
   let chatboxHTML = "";
 
+  //BOT IMAGE
+  // ${imgDisplay('robot.jpg','bot-img')}
+
   // create a chat item div element
   for (let message of recentMessages) {
     let markup = `
-    <div class="chat-item chat-item-bot">${message.bot.replyMsg}</div>
+    <div class="chat-item chat-item-bot">Bot: ${message.bot.replyMsg}</div>
     <div class="chat-item chat-item-user">${message.user.inputMsg}</div>
-     
     `;
     chatboxHTML += markup;
   }
@@ -258,7 +278,6 @@ const handleChatSubmit = (event) => {
   // render the chatbox
   renderChatbox();
 };
-
 
 // attach the submit event handler to the form here ...
 const formEl = document.getElementById("chat-form");

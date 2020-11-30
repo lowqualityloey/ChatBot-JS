@@ -1,6 +1,7 @@
 body {
   padding: 0;
   margin: 0;
+  line-height: 1.5rem;
 }
 
 #chatbot-interface {
@@ -51,10 +52,10 @@ body {
 
 #chatbox {
   width: 50vw;
-  max-height: 30vh;
+  height: 30rem;
   border: 1px solid gray;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   padding: 10px;
   font-size: 1rem;
   overflow: hidden;
@@ -63,13 +64,34 @@ body {
 
 .chat-item {
   color: black;
+  padding: 1rem 0.5rem;
 }
 
 .chat-item-user {
   font-family: "Roboto", sans-serif;
   text-align: right;
+  border-radius: 1rem;
 }
 
 .chat-item-bot {
   font-family: "Roboto Mono", monospace;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  padding: 1rem 0.5rem;
+  max-width: 20rem;
+}
+.chat-item-bot img {
+  max-width: 15rem;
+  max-height: 12rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem;
+}
+
+#bot-img {
+  object-fit: cover;
+  object-position: 50% 0;
+  width: 4rem;
+  height: 4rem;
 }

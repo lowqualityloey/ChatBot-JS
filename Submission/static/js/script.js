@@ -1,3 +1,6 @@
+let name;
+let nameConfirmed;
+
 const decisionTree = {
   question: "Does it have a characteristics of a Plant?",
   yes: {
@@ -77,9 +80,6 @@ const getName = (msg) => {
 
 let currentDecision = decisionTree;
 
-let name;
-let nameConfirmed;
-
 const yesReplies = ["yup", "yes", "okay", "ok", "yep", "y", "yeah", "yea"];
 const noReplies = [
   "nah",
@@ -88,7 +88,7 @@ const noReplies = [
   "i don't think so",
   "its not",
 ];
-const miscReplies = ["leaf", "wood", "processed", "whittled", "covered"];
+const miscReplies = ["leaf", "wood", "processed", "whittled", "covered","long","short","blue","orange","looks normal","normal","masked"];
 
     //Function Answer-Following Question
 const answerDecision = () => {
@@ -137,20 +137,20 @@ const getBotReply = (msg) => {
 
 //conditional questions
   else {
+    console.log(lcMessage);
     switch(true){
-
         //YES REPLIES
         case yesReplies.includes(lcMessage):
-          if(currentDecision){
-            currentDecision = currentDecision.yes;
-            return answerDecision();
-          }
-          break;
+        currentDecision = currentDecision.yes;
+        return answerDecision();
+             
       //NO REPLIES
-        case yesReplies.includes(lcMessage):
-        
-
-      //MISC REPLIES    
+        case noReplies.includes(lcMessage):
+        currentDecision = currentDecision.no;
+        return answerDecision();
+            
+      //MISC REPLIES  
+          //PLANT CHARACTERS
         case lcMessage === 'leaf':
         currentDecision = currentDecision.leaf;
         return answerDecision();
@@ -165,6 +165,31 @@ const getBotReply = (msg) => {
         case lcMessage === 'whittled':
         currentDecision = currentDecision.whittled;
         return answerDecision();
+
+        //NON-PLANT CHARACTERS
+        case lcMessage === 'covered':
+        currentDecision = currentDecision.covered;
+        return answerDecision(); 
+        case lcMessage === 'long':
+        currentDecision = currentDecision.long;
+        return answerDecision(); 
+        case lcMessage === 'short':
+        currentDecision = currentDecision.short;
+        return answerDecision(); 
+
+        case lcMessage === 'blue':
+        currentDecision = currentDecision.blue;
+        return answerDecision(); 
+        case lcMessage === 'orange':
+        currentDecision = currentDecision.orange;
+        return answerDecision(); 
+      
+        case lcMessage === 'normal':
+        currentDecision = currentDecision.normal;
+        return answerDecision(); 
+        case lcMessage === 'masked':
+        currentDecision = currentDecision.masked;
+        return answerDecision(); 
 
     }
   }
@@ -233,6 +258,7 @@ const handleChatSubmit = (event) => {
   // render the chatbox
   renderChatbox();
 };
+
 
 // attach the submit event handler to the form here ...
 const formEl = document.getElementById("chat-form");

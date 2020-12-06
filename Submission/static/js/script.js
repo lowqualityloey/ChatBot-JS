@@ -1,68 +1,69 @@
 let name;
 let nameConfirmed;
+let tryAgain;
 let startOfConversation = true;
 
-
-const decisionTree = { 
- 
+const decisionTree = {
   question: "Does it have a characteristics of a Plant?",
   yes: {
     question: "Which part of a Plant? a <b>Leaf</b> or <b>Wood</b>",
     leaf: {
       answer: "You're dealing with Zetsu!",
-      img: "zetsu.gif"
+      img: "zetsu.gif",
     },
     wood: {
       question: "looks <b>Processed</b> or <b>Whittled?</b>",
       processed: {
         answer: "You're dealing with Konan!",
-        img: "konan.gif"
+        img: "konan.gif",
       },
       whittled: {
         answer: "You're dealing with Sasori!",
-        img: "sasori.gif"
+        img: "sasori.gif",
       },
     },
   },
   no: {
-    question: "Has a <b>Short</b> or <b>Long Hair?</b> or maybe its <b>Covered</b>?",
+    question:
+      "Has a <b>Short</b> or <b>Long Hair?</b> or maybe its <b>Covered</b>?",
     covered: {
       answer: "You're dealing with Kakuzu!",
-      img: "kakuzu.jpg"
+      img: "kakuzu.jpg",
     },
     long: {
       question: "Is he Loud?",
       yes: {
         answer: "You're dealing with Deidara!",
-        img: "deidara.gif"
+        img: "deidara.gif",
       },
       no: {
         answer: "You're dealing with Itachi!",
-        img: "itachi.gif"
+        img: "itachi.gif",
       },
     },
     short: {
       question: "Does he act like a Child?",
       yes: {
-        question: "How's the face? Does it look <b>Normal</b> or <b>Masked</b>?",
+        question:
+          "How's the face? Does it look <b>Normal</b> or <b>Masked</b>?",
         normal: {
           answer: "You're dealing with Hidan!",
-          img: "hidan.gif"
+          img: "hidan.gif",
         },
         masked: {
           answer: "You're dealing with Tobi!",
-          img: "tobi.gif"
+          img: "tobi.gif",
         },
       },
       no: {
         question: "<b>Blue</b> or <b>Orange?</b>",
         blue: {
           answer: "You're dealing with Kisame!",
-          img: "kisame.gif"
+          img: "kisame.gif",
         },
         orange: {
           answer: "You're dealing with Pein!",
-          img: "pein.gif"
+          img: "pein.gif",
         },
       },
     },
@@ -73,9 +74,18 @@ const decisionTree = {
 const chatLogs = [];
 
 let currentDecision = decisionTree;
-let tryAgain;
 
-const yesReplies = ["yup", "yes", "okay", "ok", "yep", "y", "yeah", "yea","okay"];
+const yesReplies = [
+  "yup",
+  "yes",
+  "okay",
+  "ok",
+  "yep",
+  "y",
+  "yeah",
+  "yea",
+  "okay",
+];
 const noReplies = ["nah", "no", "n", "i don't think so", "its not"];
 const miscReplies = [
   "leaf",
@@ -113,7 +123,7 @@ const getName = (msg) => {
 //image display
 const imgDisplay = (img) => {
   return `<img src="static/img/${img}">`;
-}
+};
 
 //Function Answer-Following Question
 const answerDecision = (lcMessage) => {
@@ -121,7 +131,7 @@ const answerDecision = (lcMessage) => {
     console.log(currentDecision.question);
     return currentDecision.question;
   } else console.log(currentDecision.answer);
- 
+
   startOfConversation = true;
   tryAgain = true;
   return `${currentDecision.answer} ${imgDisplay(currentDecision.img)}
@@ -132,57 +142,52 @@ const answerDecision = (lcMessage) => {
 const getBotReply = (msg) => {
   const lcMessage = msg.toLowerCase();
 
-//Special commands
-if (lcMessage.includes('dim')){
-  document.body.style.backgroundColor = "#14202B";
-  startOfConversation =true;
-  name = null;
-  nameConfirmed = null;
-  return "Dim!";
-}
-if (lcMessage.includes('dark') || lcMessage.includes('lights out')){
-  document.body.style.backgroundColor = "#000000";
-  startOfConversation =true;
-  name = null;
-  nameConfirmed = null;
-  return "Lights Out!";
-}
-else if (lcMessage.includes('akatsuki?')){
-  startOfConversation =true;
-  name = null;
-  nameConfirmed = null;
-  return `  <p><b>Akatsuki</b> is a criminal organization of S-Class Criminals and Missing-nin and is the most wanted group in all of Shinobi world.</p> <p>Their main goal is to collect all of the Tailed Beasts for their plan of world domination.</p>
+  //Special commands
+  if (lcMessage.includes("dim")) {
+    document.body.style.backgroundColor = "#14202B";
+    startOfConversation = true;
+    name = null;
+    nameConfirmed = null;
+    return "Dim!";
+  }
+  if (lcMessage.includes("dark") || lcMessage.includes("lights out")) {
+    document.body.style.backgroundColor = "#000000";
+    startOfConversation = true;
+    name = null;
+    nameConfirmed = null;
+    return "Lights Out!";
+  } else if (lcMessage.includes("akatsuki?")) {
+    startOfConversation = true;
+    name = null;
+    nameConfirmed = null;
+    return `  <p><b>Akatsuki</b> is a criminal organization of S-Class Criminals and Missing-nin and is the most wanted group in all of Shinobi world.</p> <p>Their main goal is to collect all of the Tailed Beasts for their plan of world domination.</p>
  
 `;
-}
-
-//Start of conversation
-else if (startOfConversation === true)
-{
-  if(tryAgain === true){
-    switch (true){
-      case noReplies.includes(lcMessage):
-        tryAgain = false;     
-        return `See ya later, <b>${name}!</b>`;
-      case yesReplies.includes(lcMessage):
-        tryAgain = false;
-        startOfConversation = false;
-        currentDecision = decisionTree;
-        return `<p>Tell me this another characteristics of this villain.</p>    
-        <p><b>${currentDecision.question}</b></p>`;
-    } 
   }
-  else
- name = undefined;
- nameConfirmed = null;
-  startOfConversation = false;
-  return `Hey Ninja, What's your name?`;
-}
+
+  //Start of conversation
+  else if (startOfConversation === true) {
+    if (tryAgain === true) {
+      switch (true) {
+        case noReplies.includes(lcMessage):
+          tryAgain = false;
+          return `See ya later, <b>${name}!</b>`;
+        case yesReplies.includes(lcMessage):
+          tryAgain = false;
+          startOfConversation = false;
+          currentDecision = decisionTree;
+          return `<p>Tell me this another characteristics of this villain.</p>    
+        <p><b>${currentDecision.question}</b></p>`;
+      }
+    } else name = undefined;
+    nameConfirmed = null;
+    startOfConversation = false;
+    return `Hey Ninja, What's your name?`;
+  }
   //Name validation section
   else if (name === undefined) {
     return getName(msg);
-  } 
-  else if (nameConfirmed === false) {
+  } else if (nameConfirmed === false) {
     if (yesReplies.includes(lcMessage)) {
       nameConfirmed = true;
       currentDecision = decisionTree;
@@ -200,7 +205,6 @@ else if (startOfConversation === true)
 
     //ERROR VALIDATION
   } else if (msg === "") {
-    
     return "You were speechless, Sorry I don't get it";
   } else if (
     yesReplies.includes(lcMessage) === false &&
@@ -243,13 +247,13 @@ else if (startOfConversation === true)
         return answerDecision(lcMessage);
 
       //NON-PLANT CHARACTERS
-      case lcMessage === "covered"|| lcMessage === "its covered":
+      case lcMessage === "covered" || lcMessage === "its covered":
         currentDecision = currentDecision.covered;
         return answerDecision(lcMessage);
       case lcMessage === "long" || lcMessage === "long hair":
         currentDecision = currentDecision.long;
         return answerDecision(lcMessage);
-      case lcMessage === "short"|| lcMessage === "short hair":
+      case lcMessage === "short" || lcMessage === "short hair":
         currentDecision = currentDecision.short;
         return answerDecision(lcMessage);
 
@@ -274,8 +278,6 @@ const renderChatbox = () => {
   // get a reference to the chatbox element
   const chatboxEl = document.getElementById("chatbox");
 
-  
-
   // copy the latest set of messages, then reverses the new
   // array and takes the first 20 elements
   const recentMessages = [...chatLogs].reverse().slice(0, 20);
@@ -292,12 +294,11 @@ const renderChatbox = () => {
   // create a chat item div element
 
   for (let message of recentMessages) {
-    
     let markup = `
     <div class="chat-item chat-item-bot">
 
     <div id="bot-img">
-    ${imgDisplay('robot.jpg')}
+    ${imgDisplay("robot.jpg")}
     </div>
     <div class="chat-container">
     ${message.bot.replyMsg}

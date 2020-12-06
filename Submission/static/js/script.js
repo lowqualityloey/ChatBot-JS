@@ -1,16 +1,19 @@
 let name;
 let nameConfirmed;
+let startOfConversation = true;
+
 
 const decisionTree = { 
+ 
   question: "Does it have a characteristics of a Plant?",
   yes: {
-    question: "Which part of a Plant? a Leaf or Wood?",
+    question: "Which part of a Plant? a <b>Leaf</b> or <b>Wood</b>",
     leaf: {
       answer: "You're dealing with Zetsu!",
       img: "zetsu.gif"
     },
     wood: {
-      question: "looks Processed or Whittled?",
+      question: "looks <b>Processed</b> or <b>Whittled?</b>",
       processed: {
         answer: "You're dealing with Konan!",
         img: "konan.gif"
@@ -22,7 +25,7 @@ const decisionTree = {
     },
   },
   no: {
-    question: "Has a Short or Long Hair? or maybe its Covered?",
+    question: "Has a <b>Short</b> or <b>Long Hair?</b> or maybe its <b>Covered</b>?",
     covered: {
       answer: "You're dealing with Kakuzu!",
       img: "kakuzu.jpg"
@@ -41,7 +44,7 @@ const decisionTree = {
     short: {
       question: "Does he act like a Child?",
       yes: {
-        question: "How's the face? looks Normal or Masked?",
+        question: "How's the face? Does it look <b>Normal</b> or <b>Masked</b>?",
         normal: {
           answer: "You're dealing with Hidan!",
           img: "hidan.gif"
@@ -52,7 +55,7 @@ const decisionTree = {
         },
       },
       no: {
-        question: "Blue or Orange?",
+        question: "<b>Blue</b> or <b>Orange?</b>",
         blue: {
           answer: "You're dealing with Kisame!",
           img: "kisame.gif"
@@ -69,10 +72,6 @@ const decisionTree = {
 // array to track the chat messages
 const chatLogs = [];
 
-/**
- *
- * FINISH THIS FUNCTION!
- */
 let currentDecision = decisionTree;
 
 const yesReplies = ["yup", "yes", "okay", "ok", "yep", "y", "yeah", "yea","okay"];
@@ -81,6 +80,7 @@ const miscReplies = [
   "leaf",
   "wood",
   "processed",
+  "looks processed",
   "whittled",
   "covered",
   "its covered",
@@ -94,7 +94,7 @@ const miscReplies = [
   "normal",
   "masked",
 ];
-
+//Name Function
 const getName = (msg) => {
   name = msg;
   if (name === "") {
@@ -105,12 +105,13 @@ const getName = (msg) => {
     return "You're name has been updated";
   } else {
     nameConfirmed = false;
-    return `So your name is <b>${name}</b>, is that correct?`;
+    return `So your Name is <b>${name}</b>, is that correct?`;
   }
 };
 
-const imgDisplay = (img, id) => {
-  return `<img id="${id}"src="static/img/${img}">`;
+//image display
+const imgDisplay = (img) => {
+  return `<img src="static/img/${img}">`;
 }
 
 //Function Answer-Following Question
@@ -122,35 +123,46 @@ const answerDecision = () => {
   return (currentDecision.answer+" "+ imgDisplay(currentDecision.img));
 };
 
+
+
 const getBotReply = (msg) => {
   const lcMessage = msg.toLowerCase();
 
+//Start of conversation
+if (startOfConversation === true)
+{
+  startOfConversation = false;
+  return "Hey Ninja, What's your name?";
+}
   //Name validation section
-  if (name === undefined) {
+  else if (name === undefined) {
     return getName(msg);
   } 
   else if (nameConfirmed === false) {
     if (yesReplies.includes(lcMessage)) {
       nameConfirmed = true;
-      return `Cool! Nice to meet you, <b>${name}</b>.<br><br>Now tell me the characteristics of this villain.<br><br><b><i>${currentDecision.question}</i></b>
+      return `<p>Cool! Nice to meet you, <b>${name}</b><p>
+      <p>Now tell me the characteristics of this villain.</p>
+      
+      <p><b>${currentDecision.question}</b></p>
       `;
     } else if (noReplies.includes(lcMessage)) {
       name = undefined;
       return `Well tell me your name then.`;
     } else {
-      return `You're not making any sense`;
+      return `I don't get it... Try responding <b>Yes</> or <b>No</>`;
     }
 
     //ERROR VALIDATION
   } else if (msg === "") {
+    
     return "You were speechless, Sorry I don't get it";
   } else if (
     yesReplies.includes(lcMessage) === false &&
     noReplies.includes(lcMessage) === false &&
     miscReplies.includes(lcMessage) === false
   ) {
-    currentDecision = decisionTree;
-    return "You're not making any sense";
+    return "You're not making any sense.. Try again responding hinted choices!";
   }
 
   //conditional questions
@@ -217,6 +229,8 @@ const renderChatbox = () => {
   // get a reference to the chatbox element
   const chatboxEl = document.getElementById("chatbox");
 
+  
+
   // copy the latest set of messages, then reverses the new
   // array and takes the first 20 elements
   const recentMessages = [...chatLogs].reverse().slice(0, 20);
@@ -231,13 +245,30 @@ const renderChatbox = () => {
   let chatboxHTML = "";
 
   //BOT IMAGE
-  // ${imgDisplay('robot.jpg','bot-img')}
+ //${imgDisplay('robot.jpg','bot-img')}
 
   // create a chat item div element
+
   for (let message of recentMessages) {
+    
     let markup = `
-    <div class="chat-item chat-item-bot">Bot: ${message.bot.replyMsg}</div>
-    <div class="chat-item chat-item-user">${message.user.inputMsg}</div>
+    <div class="chat-item chat-item-bot">
+
+    <div class="bot-img">
+    ${imgDisplay('robot.jpg')}
+    </div>
+    <div class="chat-container">
+    ${message.bot.replyMsg}
+    </div>
+    </div>
+    
+    <div class="chat-item chat-item-user">
+    <div class="chat-container position-right">
+    ${message.user.inputMsg}
+    </div>
+    
+    </div>
+
     `;
     chatboxHTML += markup;
   }

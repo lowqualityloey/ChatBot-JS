@@ -1,13 +1,21 @@
+* {
+  box-sizing: border-box;
+}
 body {
   padding: 0;
   margin: 0;
-  line-height: 1.5rem;
+  line-height: 1.2rem;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 1rem;
+  background-color: #e3e3e3;
 }
-
+b {
+  color: #f97a2c;
+}
 #chatbot-interface {
   display: flex;
   flex-direction: column;
-  margin-top: 1vh;
+  margin-top: 1rem;
 }
 
 #bot-face {
@@ -17,67 +25,84 @@ body {
   margin-right: auto;
 }
 
-#robot-img {
-  height: 50vh;
-}
-
 #chat-container {
-  margin-top: 2vh;
+  /* margin-top: 0.5rem; */
   display: flex;
-  /* flex-direction: column; */
   justify-content: center;
 }
 
 #chat-form {
   display: flex;
+  background: #fdfdfd;
+  width: 32rem;
+  padding: 1rem 1rem;
 }
 
 #chat-input {
-  width: 40vw;
-  font-size: 1.5rem;
+  /* margin: 0 0.2rem; */
+  width: 27.7rem;
+  padding: 0.7rem 0.5rem;
+  border-radius: 0.3rem;
+  border-style: none;
+  background-color: #fafafa;
+}
+#chat-input::placeholder {
+  font: italic 0.9rem "Noto Sans", sans-serif;
 }
 
 #btn-chat-send {
-  width: 10vw;
-  font-size: 1.5rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  align-self: flex-end;
+  padding: 0.2rem 0.4rem;
+  border: 0;
+  background-color: transparent;
+  font-size: 1.6rem;
+  color: #f97a2c;
+}
+
+#btn-chat-send:active {
+  color: #af4e12;
 }
 
 #chatbox-container {
-  margin-top: 2vh;
+  margin-top: 2rem;
   display: flex;
   justify-content: center;
 }
 
 #chatbox {
-  width: 50vw;
+  width: 32rem;
   height: 30rem;
-  border: 1px solid gray;
+  border-style: none;
   display: flex;
   flex-direction: column-reverse;
-  padding: 10px;
+  padding: 1rem;
   font-size: 1rem;
   overflow: hidden;
   overflow-y: scroll;
+  background: #fdfdfd;
 }
 
 .chat-item {
+  display: flex;
   color: black;
-  padding: 1rem 0.5rem;
 }
 
 .chat-item-user {
-  font-family: "Roboto", sans-serif;
-  text-align: right;
-  border-radius: 1rem;
+  margin: 0.5rem 0 0.5rem 0;
+}
+.position-right {
+  margin-left: auto;
+  border: 2;
+}
+.chat-container {
+  background: #fafafa;
+  border-radius: 0.5rem;
+  border: 0.1rem solid rgba(204, 204, 204, 0.324);
+  padding: 0.5rem 0.5rem;
 }
 
 .chat-item-bot {
-  font-family: "Roboto Mono", monospace;
-  border: 1px solid #ccc;
-  border-radius: 1rem;
-  padding: 1rem 0.5rem;
   max-width: 20rem;
 }
 .chat-item-bot img {
@@ -85,13 +110,20 @@ body {
   max-height: 12rem;
   display: block;
   margin-left: auto;
-  margin-right: auto;
   padding: 1rem;
 }
 
-#bot-img {
-  object-fit: cover;
-  object-position: 50% 0;
-  width: 4rem;
-  height: 4rem;
+.bot-img {
+  display: flex;
+  align-self: flex-end;
+  border-radius: 1rem;
+  max-width: 2rem;
+  height: 2rem;
+  overflow: hidden;
+  margin: 0 0.2rem 0.1rem 0;
+}
+.bot-img img {
+  width: 8rem;
+  height: 8rem;
+  margin: -1.98rem 0 0 -3rem;
 }

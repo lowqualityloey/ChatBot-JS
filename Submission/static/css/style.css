@@ -35,7 +35,8 @@ b {
   display: flex;
   background: #fdfdfd;
   width: 32rem;
-  padding: 1rem 1rem;
+  padding: 1rem 2rem;
+  margin-top: -1rem;
 }
 
 #chat-input {
@@ -44,7 +45,7 @@ b {
   padding: 0.7rem 0.5rem;
   border-radius: 0.3rem;
   border-style: none;
-  background-color: #fafafa;
+  background-color: #edeeef;
 }
 #chat-input::placeholder {
   font: italic 0.9rem "Noto Sans", sans-serif;
@@ -58,6 +59,7 @@ b {
   background-color: transparent;
   font-size: 1.6rem;
   color: #f97a2c;
+  margin-left: 0.5rem;
 }
 
 #btn-chat-send:active {
@@ -110,10 +112,11 @@ b {
   max-height: 12rem;
   display: block;
   margin-left: auto;
-  padding: 1rem;
+  margin-right: auto;
+  padding: 0.2rem;
 }
 
-.bot-img {
+#bot-img {
   display: flex;
   align-self: flex-end;
   border-radius: 1rem;
@@ -122,8 +125,8 @@ b {
   overflow: hidden;
   margin: 0 0.2rem 0.1rem 0;
 }
-.bot-img img {
-  width: 8rem;
+#bot-img img {
+  max-width: 8rem;
   height: 8rem;
   margin: -1.98rem 0 0 -3rem;
 }

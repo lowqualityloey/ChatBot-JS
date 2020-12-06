@@ -73,6 +73,7 @@ const decisionTree = {
 const chatLogs = [];
 
 let currentDecision = decisionTree;
+let tryAgain;
 
 const yesReplies = ["yup", "yes", "okay", "ok", "yep", "y", "yeah", "yea","okay"];
 const noReplies = ["nah", "no", "n", "i don't think so", "its not"];
@@ -115,24 +116,67 @@ const imgDisplay = (img) => {
 }
 
 //Function Answer-Following Question
-const answerDecision = () => {
+const answerDecision = (lcMessage) => {
   if (currentDecision.question) {
     console.log(currentDecision.question);
     return currentDecision.question;
   } else console.log(currentDecision.answer);
-  return (currentDecision.answer+" "+ imgDisplay(currentDecision.img));
+ 
+  startOfConversation = true;
+  tryAgain = true;
+  return `${currentDecision.answer} ${imgDisplay(currentDecision.img)}
+  <b>Do you want to start another identification?</b>
+  `;
 };
-
-
 
 const getBotReply = (msg) => {
   const lcMessage = msg.toLowerCase();
 
+//Special commands
+if (lcMessage.includes('dim')){
+  document.body.style.backgroundColor = "#14202B";
+  startOfConversation =true;
+  name = null;
+  nameConfirmed = null;
+  return "Dim!";
+}
+if (lcMessage.includes('dark') || lcMessage.includes('lights out')){
+  document.body.style.backgroundColor = "#000000";
+  startOfConversation =true;
+  name = null;
+  nameConfirmed = null;
+  return "Lights Out!";
+}
+else if (lcMessage.includes('akatsuki?')){
+  startOfConversation =true;
+  name = null;
+  nameConfirmed = null;
+  return `  <p><b>Akatsuki</b> is a criminal organization of S-Class Criminals and Missing-nin and is the most wanted group in all of Shinobi world.</p> <p>Their main goal is to collect all of the Tailed Beasts for their plan of world domination.</p>
+ 
+`;
+}
+
 //Start of conversation
-if (startOfConversation === true)
+else if (startOfConversation === true)
 {
+  if(tryAgain === true){
+    switch (true){
+      case noReplies.includes(lcMessage):
+        tryAgain = false;     
+        return `See ya later, <b>${name}!</b>`;
+      case yesReplies.includes(lcMessage):
+        tryAgain = false;
+        startOfConversation = false;
+        currentDecision = decisionTree;
+        return `<p>Tell me this another characteristics of this villain.</p>    
+        <p><b>${currentDecision.question}</b></p>`;
+    } 
+  }
+  else
+ name = undefined;
+ nameConfirmed = null;
   startOfConversation = false;
-  return "Hey Ninja, What's your name?";
+  return `Hey Ninja, What's your name?`;
 }
   //Name validation section
   else if (name === undefined) {
@@ -141,6 +185,7 @@ if (startOfConversation === true)
   else if (nameConfirmed === false) {
     if (yesReplies.includes(lcMessage)) {
       nameConfirmed = true;
+      currentDecision = decisionTree;
       return `<p>Cool! Nice to meet you, <b>${name}</b><p>
       <p>Now tell me the characteristics of this villain.</p>
       
@@ -162,7 +207,7 @@ if (startOfConversation === true)
     noReplies.includes(lcMessage) === false &&
     miscReplies.includes(lcMessage) === false
   ) {
-    return "You're not making any sense.. Try again responding hinted choices!";
+    return "You're not making any sense.. <p>Try again responding hinted choices!<p>";
   }
 
   //conditional questions
@@ -172,55 +217,55 @@ if (startOfConversation === true)
       //YES REPLIES
       case yesReplies.includes(lcMessage):
         currentDecision = currentDecision.yes;
-        return answerDecision();
+        return answerDecision(lcMessage);
 
       //NO REPLIES
       case noReplies.includes(lcMessage):
         currentDecision = currentDecision.no;
-        return answerDecision();
+        return answerDecision(lcMessage);
 
       //MISC REPLIES
       //PLANT CHARACTERS
       case lcMessage === "leaf":
         currentDecision = currentDecision.leaf;
-        return answerDecision();
+        return answerDecision(lcMessage);
 
       case lcMessage === "wood":
         currentDecision = currentDecision.wood;
         console.log(currentDecision);
-        return answerDecision();
+        return answerDecision(lcMessage);
 
       case lcMessage === "processed":
         currentDecision = currentDecision.processed;
-        return answerDecision();
+        return answerDecision(lcMessage);
       case lcMessage === "whittled":
         currentDecision = currentDecision.whittled;
-        return answerDecision();
+        return answerDecision(lcMessage);
 
       //NON-PLANT CHARACTERS
       case lcMessage === "covered"|| lcMessage === "its covered":
         currentDecision = currentDecision.covered;
-        return answerDecision();
+        return answerDecision(lcMessage);
       case lcMessage === "long" || lcMessage === "long hair":
         currentDecision = currentDecision.long;
-        return answerDecision();
+        return answerDecision(lcMessage);
       case lcMessage === "short"|| lcMessage === "short hair":
         currentDecision = currentDecision.short;
-        return answerDecision();
+        return answerDecision(lcMessage);
 
       case lcMessage === "blue":
         currentDecision = currentDecision.blue;
         return answerDecision();
       case lcMessage === "orange":
         currentDecision = currentDecision.orange;
-        return answerDecision();
+        return answerDecision(lcMessage);
 
       case lcMessage === "normal" || lcMessage === "looks normal":
         currentDecision = currentDecision.normal;
-        return answerDecision();
+        return answerDecision(lcMessage);
       case lcMessage === "masked":
         currentDecision = currentDecision.masked;
-        return answerDecision();
+        return answerDecision(lcMessage);
     }
   }
 };
@@ -244,9 +289,6 @@ const renderChatbox = () => {
   // markup to display
   let chatboxHTML = "";
 
-  //BOT IMAGE
- //${imgDisplay('robot.jpg','bot-img')}
-
   // create a chat item div element
 
   for (let message of recentMessages) {
@@ -254,7 +296,7 @@ const renderChatbox = () => {
     let markup = `
     <div class="chat-item chat-item-bot">
 
-    <div class="bot-img">
+    <div id="bot-img">
     ${imgDisplay('robot.jpg')}
     </div>
     <div class="chat-container">

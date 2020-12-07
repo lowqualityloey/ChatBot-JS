@@ -139,18 +139,25 @@ const answerDecision = (lcMessage) => {
   `;
 };
 
+//BOT REPLIES
 const getBotReply = (msg) => {
   const lcMessage = msg.toLowerCase();
 
   //Special commands
+  if (lcMessage.includes("light") || lcMessage.includes("white")) {
+    document.body.style.backgroundColor = "#f6f6f6";
+    startOfConversation = true;
+    name = null;
+    nameConfirmed = null;
+    return "Back to default light!";
+  }
   if (lcMessage.includes("dim")) {
     document.body.style.backgroundColor = "#14202B";
     startOfConversation = true;
     name = null;
     nameConfirmed = null;
     return "Dim!";
-  }
-  if (lcMessage.includes("dark") || lcMessage.includes("lights out")) {
+  } else if (lcMessage.includes("dark") || lcMessage.includes("lights out")) {
     document.body.style.backgroundColor = "#000000";
     startOfConversation = true;
     name = null;

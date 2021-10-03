@@ -1,16 +1,10 @@
-# 01 Project - Build a Chatbot
+# Which Akatsuki Member you are dealing with?  ——CHATBOT PROJECT
+You have encountered an unknown Villain from a group of powerful Shinobi called Akatsuki in Naruto Shippuuden. The Chatbot will recognize the identity of the enemy.
 
-Write logic for a chatbot to reply to user input
+## Problem Statement
 
----
+Create a Character Identifier Chatbot that develops an understanding of every villain's qualities described by the user. The program should recognize and displays the concluded character's identity.
 
-## Project Brief
-
-Build a chatbot that helps your customer solve a problem. Your customer will be able to enter text into a form, and your bot should analysis the text and respond accordingly.
-
-![exercise](docs/chatbot-exercise.png)
-
----
 
 ## Rationale
 
